@@ -1,0 +1,137 @@
+from karel.stanfordkarel import *
+
+"""
+File: ExtensionKarel.py
+-----------------------
+This file is for optional extension programs. 
+"""
+
+
+def main():
+    """
+    Karel has become an overnight Mathematician. she has studied some great books and learnt easiest ways to calculate
+    count. she is using this knowledge to count the obstacles, she has in her tiny world. In this project, Karel is
+    counting the number of horizontal lines, basically obstacles, present in her world. since karel is an overnight
+     Mathematician, she has some limitations too-
+     - Karel faces East in the beginning
+     - The first column should not contain any horizontal lines as Karel cannot pass through a line
+     - Karel can count the number of horizontal lines, lines aligned in the direction from West to East, only.
+     - Any vertical lines in the world may stop Karel, as she cannot pass through a wall yet
+     - At the end, the total count of lines will be displayed at the topmost corner of the first column and Karel will
+       will be standing at the position from where she start, no matter which direction she faces.
+    """
+
+    count_the_lines()
+    come_to_start()
+    count_the_beepers()
+    total_count()
+
+
+def count_the_lines():
+    # Karel counts the number of lines in each row
+
+    # pre-condition: Karel faces east
+
+    # post-condition: Karel faces east and puts beepers below all the lines in the row
+
+    while left_is_clear():
+        count_the_lines_in_row()
+        come_back()
+        move_to_next_row()
+
+
+def count_the_lines_in_row():
+    # To count the number of lines, Karel puts beeper below each line in the row
+    put_beepers_below_lines()
+
+
+def put_beepers_below_lines():
+    # Karel puts beeper below a line
+    while front_is_clear():
+        move()
+        if left_is_blocked():
+            put_beeper()
+
+
+def come_back():
+    # Karel go back to the first corner of the row, towards east
+    turn_around()
+    while front_is_clear():
+        move()
+
+
+def move_to_next_row():
+    # karel moves to the next row
+    turn_right()
+    move()
+    turn_right()
+
+
+def come_to_start():
+    # Karel comes to the position from where it started
+    turn_right()
+    while front_is_clear():
+        move()
+    turn_left()
+
+
+def count_the_beepers():
+    """
+    Karel adds the beepers present in a row and place the number of beepers equivalent to the number of lines present
+    in that row, in first corner of each row
+    """
+
+    while left_is_clear():
+        count_the_row()
+        move_to_next_row()
+
+
+def count_the_row():
+    # Karel picks the beepers present below the lines and place it in the first corner of the row
+
+    while front_is_clear():
+        move()
+        if beepers_present():
+            pick_beeper()
+            turn_around()
+            while front_is_clear():
+                move()
+            put_beeper()
+            turn_around()
+    turn_around()
+    while front_is_clear():
+        move()
+
+
+def total_count():
+    """
+     Karel adds all the beepers and the final number of beepers i.e. the final number of lines present in the given
+    world are calculated
+    """
+    turn_right()
+    while front_is_clear():
+        move()
+        if beepers_present():
+            pick_beeper()
+            turn_around()
+            while front_is_clear():
+                move()
+            put_beeper()
+            turn_around()
+
+
+def turn_around():
+    # Karel faces the opposite direction
+    turn_left()
+    turn_left()
+
+
+def turn_right():
+    for i in range(3):
+        turn_left()
+
+
+# There is no need to edit code beyond this point
+
+if __name__ == "__main__":
+    run_karel_program()
